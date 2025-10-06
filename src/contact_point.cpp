@@ -11,10 +11,10 @@
 namespace dynacom {
 
 ContactPoint::ContactPoint() {}
-ContactPoint::ContactPoint(const ContactPointSettings &settings) {
+ContactPoint::ContactPoint(const ContactPointSettings& settings) {
   initialize(settings);
 }
-void ContactPoint::initialize(const ContactPointSettings &settings) {
+void ContactPoint::initialize(const ContactPointSettings& settings) {
   settings_ = settings;
   double mu = settings_.mu;
 
@@ -48,18 +48,18 @@ void ContactPoint::initialize(const ContactPointSettings &settings) {
   contactForce_.setZero();
 }
 
-void ContactPoint::setMu(const double &mu) {
+void ContactPoint::setMu(const double& mu) {
   settings_.mu = mu;
   friction_A_.block<4, 1>(0, 2).setConstant(-mu);
 }
 
-void ContactPoint::setForceWeights(const Eigen::Vector3d &force_weights) {
+void ContactPoint::setForceWeights(const Eigen::Vector3d& force_weights) {
   settings_.weights.head<3>() = force_weights;
   regularization_A_.head<3>() = force_weights;
 }
 
-void ContactPoint::updateNewtonEuler(const Eigen::Vector3d &CoM,
-                                     const pinocchio::SE3 &oMs) {
+void ContactPoint::updateNewtonEuler(const Eigen::Vector3d& CoM,
+                                     const pinocchio::SE3& oMs) {
   /**
    * @brief Assuming that the orientation of the world frame is the identity.
    *

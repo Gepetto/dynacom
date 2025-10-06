@@ -9,7 +9,7 @@ namespace dynacom {
 namespace python {
 namespace bp = boost::python;
 
-bp::dict get_settings(Contact6D &self) {
+bp::dict get_settings(Contact6D& self) {
   bp::dict settings;
   Contact6DSettings conf = self.getSettings();
   settings["frame_name"] = conf.frame_name;
@@ -22,11 +22,11 @@ bp::dict get_settings(Contact6D &self) {
   return settings;
 }
 
-void set_weights(Contact6DSettings &self, Eigen::Matrix<double, 6, 1> w) {
+void set_weights(Contact6DSettings& self, Eigen::Matrix<double, 6, 1> w) {
   self.weights = w;
 }
 
-Eigen::Matrix<double, 6, 1> get_weights(Contact6DSettings &self) {
+Eigen::Matrix<double, 6, 1> get_weights(Contact6DSettings& self) {
   return self.weights;
 }
 

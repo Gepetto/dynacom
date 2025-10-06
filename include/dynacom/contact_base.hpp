@@ -38,29 +38,29 @@ class ContactBase {
   //  virtual ~Contact() {}
 
   // setters
-  void setPose(pinocchio::SE3 &pose) { oMs_ = pose; }
+  void setPose(pinocchio::SE3& pose) { oMs_ = pose; }
   void setFrameID(const size_t frameID) { frameID_ = frameID; }
-  void applyForce(const Eigen::MatrixXd &force) { contactForce_ << force; }
+  void applyForce(const Eigen::MatrixXd& force) { contactForce_ << force; }
   void deactivate() { contactForce_.setZero(); }
 
-  virtual void updateNewtonEuler(const Eigen::Vector3d &CoM,
-                                 const pinocchio::SE3 &oMf) = 0;
+  virtual void updateNewtonEuler(const Eigen::Vector3d& CoM,
+                                 const pinocchio::SE3& oMf) = 0;
 
   // getters
-  const pinocchio::SE3 &getPose() const { return oMs_; }
+  const pinocchio::SE3& getPose() const { return oMs_; }
   size_t getFrameID() const { return frameID_; }
   size_t uni_rows() const { return unilaterality_A_.rows(); }
   size_t fri_rows() const { return friction_A_.rows(); }
   size_t cols() const { return newton_euler_A_.cols(); }
-  const Eigen::VectorXd &appliedForce() { return contactForce_; }
+  const Eigen::VectorXd& appliedForce() { return contactForce_; }
 
-  const Eigen::MatrixXd &uni_A() { return unilaterality_A_; }
-  const Eigen::VectorXd &uni_b() { return unilaterality_b_; }
-  const Eigen::MatrixXd &fri_A() { return friction_A_; }
-  const Eigen::VectorXd &fri_b() { return friction_b_; }
-  const Eigen::VectorXd &reg_A() { return regularization_A_; }
-  const Eigen::VectorXd &reg_b() { return regularization_b_; }
-  const Eigen::Matrix<double, 6, -1> &ne_A() { return newton_euler_A_; }
+  const Eigen::MatrixXd& uni_A() { return unilaterality_A_; }
+  const Eigen::VectorXd& uni_b() { return unilaterality_b_; }
+  const Eigen::MatrixXd& fri_A() { return friction_A_; }
+  const Eigen::VectorXd& fri_b() { return friction_b_; }
+  const Eigen::VectorXd& reg_A() { return regularization_A_; }
+  const Eigen::VectorXd& reg_b() { return regularization_b_; }
+  const Eigen::Matrix<double, 6, -1>& ne_A() { return newton_euler_A_; }
 
   const Eigen::Matrix<double, 6, 6> toWorldForces() {
     return oMs_.toActionMatrixInverse().transpose();
@@ -69,7 +69,7 @@ class ContactBase {
     return cMo_.act(oMs_).toActionMatrixInverse().transpose();
   }
 
-  virtual std::string &getFrameName() = 0;
+  virtual std::string& getFrameName() = 0;
 };
 
 }  // namespace dynacom

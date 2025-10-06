@@ -14,7 +14,7 @@ namespace dynacom {
 namespace python {
 namespace bp = boost::python;
 
-bp::dict get_settings(DynaCoM &self) {
+bp::dict get_settings(DynaCoM& self) {
   bp::dict settings;
   DynaCoMSettings conf = self.getSettings();
   settings["urdf"] = conf.urdf;
@@ -22,7 +22,7 @@ bp::dict get_settings(DynaCoM &self) {
   return settings;
 }
 
-std::shared_ptr<ContactBase> getContact(DynaCoM &self, std::string name) {
+std::shared_ptr<ContactBase> getContact(DynaCoM& self, std::string name) {
   return boost::ref(self.getContact(name));
 }
 
@@ -39,15 +39,15 @@ void exposeDynaCoM() {
            (bp::arg("self"), bp::arg("posture"), bp::arg("velocity"),
             bp::arg("aceleration"), bp::arg("extWrench"),
             bp::arg("flatHorizontalGround") = true))
-      .def<void (DynaCoM::*)(const double &, const Eigen::VectorXd &,
-                             const Eigen::VectorXd &, const Eigen::VectorXd &,
-                             const Eigen::Matrix<double, 6, 1> &,
+      .def<void (DynaCoM::*)(const double&, const Eigen::VectorXd&,
+                             const Eigen::VectorXd&, const Eigen::VectorXd&,
+                             const Eigen::Matrix<double, 6, 1>&,
                              bool flatHorizontalGround)>(
           "computeNL", &DynaCoM::computeNL,
           bp::args("self", "posture", "velocity", "aceleration", "extWrench",
                    "flatHorizontalGround"))
-      .def<void (DynaCoM::*)(const double &)>("computeNL", &DynaCoM::computeNL,
-                                              bp::args("self"))
+      .def<void (DynaCoM::*)(const double&)>("computeNL", &DynaCoM::computeNL,
+                                             bp::args("self"))
       .def("addContact6d", &DynaCoM::addContact6d,
            (bp::arg("self"), bp::arg("contact"), bp::arg("name"),
             bp::arg("active") = true))

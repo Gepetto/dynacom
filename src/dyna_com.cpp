@@ -83,10 +83,10 @@ const Eigen::Matrix<double, 6, 6> DynaCoM::toWorldCoPWrench(
   return oXso_ * Sz_ * soXs_;
 }
 
-void DynaCoM::computeDynamics(const Eigen::VectorXd &posture,
-                              const Eigen::VectorXd &velocity,
-                              const Eigen::VectorXd &acceleration,
-                              const Eigen::Matrix<double, 6, 1> &externalWrench,
+void DynaCoM::computeDynamics(const Eigen::VectorXd& posture,
+                              const Eigen::VectorXd& velocity,
+                              const Eigen::VectorXd& acceleration,
+                              const Eigen::Matrix<double, 6, 1>& externalWrench,
                               bool flatHorizontalGround) {
   /**
    * @brief The external wrench is supposed to be expressed
@@ -131,7 +131,7 @@ void DynaCoM::computeDynamics(const Eigen::VectorXd &posture,
 
     CoPTorque_ = Eigen::Vector3d::Zero();
     for (std::string name : active_contact6ds_) {
-      std::shared_ptr<ContactBase> &contact = known_contact6ds_[name];
+      std::shared_ptr<ContactBase>& contact = known_contact6ds_[name];
       CoPTorque_ +=
           (toWorldCoPWrench(contact->getPose()) * contact->appliedForce())
               .segment<3>(3);
@@ -140,17 +140,17 @@ void DynaCoM::computeDynamics(const Eigen::VectorXd &posture,
   }
 }
 
-void DynaCoM::computeNL(const double &w, const Eigen::VectorXd &posture,
-                        const Eigen::VectorXd &velocity,
-                        const Eigen::VectorXd &acceleration,
-                        const Eigen::Matrix<double, 6, 1> &externalWrench,
+void DynaCoM::computeNL(const double& w, const Eigen::VectorXd& posture,
+                        const Eigen::VectorXd& velocity,
+                        const Eigen::VectorXd& acceleration,
+                        const Eigen::Matrix<double, 6, 1>& externalWrench,
                         bool flatHorizontalGround) {
   computeDynamics(posture, velocity, acceleration, externalWrench,
                   flatHorizontalGround);
   computeNL(w);
 }
 
-void DynaCoM::computeNL(const double &w) {
+void DynaCoM::computeNL(const double& w) {
   /**
    * In this function form, computeDynamics is supposed to have been called
    * before.
@@ -161,8 +161,8 @@ void DynaCoM::computeNL(const double &w) {
 // Contact management
 // //////////////////////////////////////////////////////////////////
 
-void DynaCoM::addContact6d(const std::shared_ptr<ContactBase> &contact,
-                           const std::string &name, const bool active) {
+void DynaCoM::addContact6d(const std::shared_ptr<ContactBase>& contact,
+                           const std::string& name, const bool active) {
   contact->setFrameID(model_.getFrameId(contact->getFrameName()));
   contact->setPose(data_.oMf[contact->getFrameID()]);
 
@@ -173,7 +173,7 @@ void DynaCoM::addContact6d(const std::shared_ptr<ContactBase> &contact,
   if (active) activateContact6d(name);
 }
 
-void DynaCoM::removeContact6d(const std::string &name) {
+void DynaCoM::removeContact6d(const std::string& name) {
   knownID_ = known_contact6ds_.find(name);
   if (knownID_ != known_contact6ds_.end()) {
     removeSizes(known_contact6ds_[name]);
@@ -182,7 +182,7 @@ void DynaCoM::removeContact6d(const std::string &name) {
   }
 }
 
-void DynaCoM::addSizes(const std::shared_ptr<ContactBase> &contact) {
+void DynaCoM::addSizes(const std::shared_ptr<ContactBase>& contact) {
   uni_rows_ += contact->uni_rows();
   fri_rows_ += contact->fri_rows();
   cols_ += contact->cols();
@@ -190,7 +190,7 @@ void DynaCoM::addSizes(const std::shared_ptr<ContactBase> &contact) {
   resizeMatrices();
 }
 
-void DynaCoM::removeSizes(const std::shared_ptr<ContactBase> &contact) {
+void DynaCoM::removeSizes(const std::shared_ptr<ContactBase>& contact) {
   uni_rows_ -= contact->uni_rows();
   fri_rows_ -= contact->fri_rows();
   cols_ -= contact->cols();
@@ -208,7 +208,7 @@ void DynaCoM::resizeMatrices() {
   newton_euler_A_.resize(6, cols_);
 }
 
-void DynaCoM::activateContact6d(const std::string &name) {
+void DynaCoM::activateContact6d(const std::string& name) {
   activeID_ =
       std::find(active_contact6ds_.begin(), active_contact6ds_.end(), name);
   knownID_ = known_contact6ds_.find(name);
@@ -226,7 +226,7 @@ void DynaCoM::activateContact6d(const std::string &name) {
   std::cout << name << " was already active" << std::endl;
 }
 
-void DynaCoM::deactivateContact6d(const std::string &name) {
+void DynaCoM::deactivateContact6d(const std::string& name) {
   activeID_ =
       std::find(active_contact6ds_.begin(), active_contact6ds_.end(), name);
   if (activeID_ != active_contact6ds_.end()) {
@@ -238,16 +238,16 @@ void DynaCoM::deactivateContact6d(const std::string &name) {
   std::cout << name << " was not active" << std::endl;
 }
 
-void DynaCoM::buildMatrices(const Eigen::Vector3d &groundCoMForce,
-                            const Eigen::Vector3d &groundCoMTorque,
-                            const Eigen::Vector3d &CoM) {
+void DynaCoM::buildMatrices(const Eigen::Vector3d& groundCoMForce,
+                            const Eigen::Vector3d& groundCoMTorque,
+                            const Eigen::Vector3d& CoM) {
   size_t uni_r, fri_r, cols;
 
   uni_i_ = 0;
   fri_i_ = 0;
   j_ = 0;
   for (std::string name : active_contact6ds_) {
-    std::shared_ptr<ContactBase> &contact = known_contact6ds_[name];
+    std::shared_ptr<ContactBase>& contact = known_contact6ds_[name];
 
     uni_r = contact->uni_rows();
     fri_r = contact->fri_rows();
@@ -389,9 +389,9 @@ void DynaCoM::distribute() {
   }
 }
 
-void DynaCoM::distributeForce(const Eigen::Vector3d &groundCoMForce,
-                              const Eigen::Vector3d &groundCoMTorque,
-                              const Eigen::Vector3d &CoM) {
+void DynaCoM::distributeForce(const Eigen::Vector3d& groundCoMForce,
+                              const Eigen::Vector3d& groundCoMTorque,
+                              const Eigen::Vector3d& CoM) {
   /**
    *
    *  Make sure that the data of the dynaCoM

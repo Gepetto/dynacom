@@ -38,14 +38,14 @@ struct Contact6DSettings {
     return out.str();
   }
 
-  std::ostream &operator<<(std::ostream &out) {
+  std::ostream& operator<<(std::ostream& out) {
     out << this->to_string();
     return out;
   }
 
-  bool operator!=(const Contact6DSettings &rhs) { return !(*this == rhs); }
+  bool operator!=(const Contact6DSettings& rhs) { return !(*this == rhs); }
 
-  bool operator==(const Contact6DSettings &rhs) {
+  bool operator==(const Contact6DSettings& rhs) {
     bool test = true;
     test &= this->frame_name == rhs.frame_name;
     test &= this->mu == rhs.mu;
@@ -63,21 +63,21 @@ class Contact6D : public ContactBase {
 
  public:
   Contact6D();
-  Contact6D(const Contact6DSettings &settings);
-  void initialize(const Contact6DSettings &settings);
+  Contact6D(const Contact6DSettings& settings);
+  void initialize(const Contact6DSettings& settings);
 
   // setters
-  void setMu(const double &mu);
-  void setGu(const double &gu);
-  void setForceWeights(const Eigen::Vector3d &force_weights);
-  void setTorqueWeights(const Eigen::Vector3d &torque_weights);
-  void setSurfaceHalfWidth(const double &half_width);
-  void setSurfaceHalfLength(const double &half_length);
-  void updateNewtonEuler(const Eigen::Vector3d &CoM, const pinocchio::SE3 &oMf);
+  void setMu(const double& mu);
+  void setGu(const double& gu);
+  void setForceWeights(const Eigen::Vector3d& force_weights);
+  void setTorqueWeights(const Eigen::Vector3d& torque_weights);
+  void setSurfaceHalfWidth(const double& half_width);
+  void setSurfaceHalfLength(const double& half_length);
+  void updateNewtonEuler(const Eigen::Vector3d& CoM, const pinocchio::SE3& oMf);
 
   // getters
-  const Contact6DSettings &getSettings() { return settings_; }
-  std::string &getFrameName() { return settings_.frame_name; }
+  const Contact6DSettings& getSettings() { return settings_; }
+  std::string& getFrameName() { return settings_.frame_name; }
 };
 
 }  // namespace dynacom

@@ -10,7 +10,7 @@ namespace dynacom {
 namespace python {
 namespace bp = boost::python;
 
-bp::dict get_settings(ContactPoint &self) {
+bp::dict get_settings(ContactPoint& self) {
   bp::dict settings;
   ContactPointSettings conf = self.getSettings();
   settings["frame_name"] = conf.frame_name;
@@ -20,11 +20,11 @@ bp::dict get_settings(ContactPoint &self) {
   return settings;
 }
 
-void set_weights(ContactPointSettings &self, Eigen::Vector3d w) {
+void set_weights(ContactPointSettings& self, Eigen::Vector3d w) {
   self.weights = w;
 }
 
-Eigen::Vector3d get_weights(ContactPointSettings &self) { return self.weights; }
+Eigen::Vector3d get_weights(ContactPointSettings& self) { return self.weights; }
 
 void exposeContactPoint() {
   bp::class_<ContactPointSettings>("ContactPointSettings")

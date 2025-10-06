@@ -34,15 +34,15 @@ struct DynaCoMSettings {
    */
   std::string urdf = "";
 
-  friend std::ostream &operator<<(std::ostream &out,
-                                  const DynaCoMSettings &obj) {
+  friend std::ostream& operator<<(std::ostream& out,
+                                  const DynaCoMSettings& obj) {
     out << "DynaCoMSettings:\n";
     out << "    urdf: " << obj.urdf << std::endl;
     return out;
   }
 
-  friend bool operator==(const DynaCoMSettings &lhs,
-                         const DynaCoMSettings &rhs) {
+  friend bool operator==(const DynaCoMSettings& lhs,
+                         const DynaCoMSettings& rhs) {
     bool test = true;
     test &= lhs.urdf == rhs.urdf;
     return test;
@@ -109,12 +109,12 @@ class DynaCoM {
   pinocchio::SE3 oMso_, soMs_;
   Eigen::Matrix<double, 6, 6> Sz_, oXso_, soXs_;
 
-  void addSizes(const std::shared_ptr<ContactBase> &contact);
-  void removeSizes(const std::shared_ptr<ContactBase> &contact);
+  void addSizes(const std::shared_ptr<ContactBase>& contact);
+  void removeSizes(const std::shared_ptr<ContactBase>& contact);
   void resizeMatrices();
-  void buildMatrices(const Eigen::Vector3d &groundCoMForce,
-                     const Eigen::Vector3d &groundCoMTorque,
-                     const Eigen::Vector3d &CoM);
+  void buildMatrices(const Eigen::Vector3d& groundCoMForce,
+                     const Eigen::Vector3d& groundCoMTorque,
+                     const Eigen::Vector3d& CoM);
   void solveQP();
   void distribute();
 
@@ -125,53 +125,53 @@ class DynaCoM {
   DynaCoM(const DynaCoMSettings settings);
   void initialize(const DynaCoMSettings settings);
 
-  void computeDynamics(const Eigen::VectorXd &posture,
-                       const Eigen::VectorXd &velocity,
-                       const Eigen::VectorXd &acceleration,
-                       const Eigen::Matrix<double, 6, 1> &externalWrench =
+  void computeDynamics(const Eigen::VectorXd& posture,
+                       const Eigen::VectorXd& velocity,
+                       const Eigen::VectorXd& acceleration,
+                       const Eigen::Matrix<double, 6, 1>& externalWrench =
                            Eigen::Matrix<double, 6, 1>::Zero(),
                        bool flatHorizontalGround = true);
 
-  void computeNL(const double &w, const Eigen::VectorXd &posture,
-                 const Eigen::VectorXd &velocity,
-                 const Eigen::VectorXd &acceleration,
-                 const Eigen::Matrix<double, 6, 1> &externalWrench =
+  void computeNL(const double& w, const Eigen::VectorXd& posture,
+                 const Eigen::VectorXd& velocity,
+                 const Eigen::VectorXd& acceleration,
+                 const Eigen::Matrix<double, 6, 1>& externalWrench =
                      Eigen::Matrix<double, 6, 1>::Zero(),
                  bool flatHorizontalGround = true);
 
-  void computeNL(const double &w);
+  void computeNL(const double& w);
 
-  void addContact6d(const std::shared_ptr<ContactBase> &contact,
-                    const std::string &name, const bool active = true);
-  void removeContact6d(const std::string &name);
+  void addContact6d(const std::shared_ptr<ContactBase>& contact,
+                    const std::string& name, const bool active = true);
+  void removeContact6d(const std::string& name);
 
-  void activateContact6d(const std::string &name);
-  void deactivateContact6d(const std::string &name);
+  void activateContact6d(const std::string& name);
+  void deactivateContact6d(const std::string& name);
 
-  void distributeForce(const Eigen::Vector3d &groundCoMForce,
-                       const Eigen::Vector3d &groundCoMTorque,
-                       const Eigen::Vector3d &CoM);
+  void distributeForce(const Eigen::Vector3d& groundCoMForce,
+                       const Eigen::Vector3d& groundCoMTorque,
+                       const Eigen::Vector3d& CoM);
 
   // GETTERS
   /// @brief Please call computeDynamics first.
-  const Eigen::Vector3d &getAMVariation() { return dL_; }
-  const Eigen::Vector3d &getCoM() { return data_.com[0]; }
-  const Eigen::Vector3d &getVCoM() { return data_.vcom[0]; }
-  const Eigen::Vector3d &getACoM() { return acom_; }
-  const Eigen::Vector3d &getAM() { return L_; }
-  const Eigen::Vector2d &getCoP() { return cop_; }
-  const Eigen::Vector2d &getNL() { return n_; }
-  const Eigen::Vector3d &getGroundCoMForce() { return groundCoMForce_; }
-  const Eigen::Vector3d &getGroundCoMTorque() { return groundCoMTorque_; }
-  const std::vector<std::string> &getActiveContacts() {
+  const Eigen::Vector3d& getAMVariation() { return dL_; }
+  const Eigen::Vector3d& getCoM() { return data_.com[0]; }
+  const Eigen::Vector3d& getVCoM() { return data_.vcom[0]; }
+  const Eigen::Vector3d& getACoM() { return acom_; }
+  const Eigen::Vector3d& getAM() { return L_; }
+  const Eigen::Vector2d& getCoP() { return cop_; }
+  const Eigen::Vector2d& getNL() { return n_; }
+  const Eigen::Vector3d& getGroundCoMForce() { return groundCoMForce_; }
+  const Eigen::Vector3d& getGroundCoMTorque() { return groundCoMTorque_; }
+  const std::vector<std::string>& getActiveContacts() {
     return active_contact6ds_;
   }
-  const std::shared_ptr<ContactBase> &getContact(std::string name) {
+  const std::shared_ptr<ContactBase>& getContact(std::string name) {
     return known_contact6ds_[name];
   }
-  const DynaCoMSettings &getSettings() { return settings_; }
-  const pinocchio::Model &getModel() { return model_; }
-  const pinocchio::Data &getData() { return data_; }
+  const DynaCoMSettings& getSettings() { return settings_; }
+  const pinocchio::Model& getModel() { return model_; }
+  const pinocchio::Data& getData() { return data_; }
 
   const Eigen::MatrixXd uni_A() {
     return unilaterality_A_.block(0, 0, uni_i_, j_);
@@ -184,8 +184,8 @@ class DynaCoM {
   const Eigen::Matrix<double, 6, -1> ne_A() {
     return newton_euler_A_.block(0, 0, 6, j_);
   }
-  const Eigen::Matrix<double, 6, 1> &ne_b() { return newton_euler_b_; }
-  const Eigen::VectorXd &allForces() { return F_; }
+  const Eigen::Matrix<double, 6, 1>& ne_b() { return newton_euler_b_; }
+  const Eigen::VectorXd& allForces() { return F_; }
 };
 
 }  // namespace dynacom
