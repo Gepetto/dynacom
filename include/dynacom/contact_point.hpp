@@ -34,12 +34,12 @@ struct ContactPointSettings {
     return out.str();
   }
 
-  std::ostream &operator<<(std::ostream &out) {
+  std::ostream& operator<<(std::ostream& out) {
     out << this->to_string();
     return out;
   }
 
-  bool operator==(const ContactPointSettings &rhs) {
+  bool operator==(const ContactPointSettings& rhs) {
     bool test = true;
     test &= this->frame_name == rhs.frame_name;
     test &= this->mu == rhs.mu;
@@ -47,7 +47,7 @@ struct ContactPointSettings {
     return test;
   }
 
-  bool operator!=(const ContactPointSettings &rhs) { return !(*this == rhs); }
+  bool operator!=(const ContactPointSettings& rhs) { return !(*this == rhs); }
 };
 
 class ContactPoint : public ContactBase {
@@ -56,17 +56,17 @@ class ContactPoint : public ContactBase {
 
  public:
   ContactPoint();
-  ContactPoint(const ContactPointSettings &settings);
-  void initialize(const ContactPointSettings &settings);
+  ContactPoint(const ContactPointSettings& settings);
+  void initialize(const ContactPointSettings& settings);
 
   // setters
-  void setMu(const double &mu);
-  void setForceWeights(const Eigen::Vector3d &force_weights);
-  void updateNewtonEuler(const Eigen::Vector3d &CoM, const pinocchio::SE3 &oMf);
+  void setMu(const double& mu);
+  void setForceWeights(const Eigen::Vector3d& force_weights);
+  void updateNewtonEuler(const Eigen::Vector3d& CoM, const pinocchio::SE3& oMf);
 
   // getters
-  const ContactPointSettings &getSettings() { return settings_; }
-  std::string &getFrameName() { return settings_.frame_name; }
+  const ContactPointSettings& getSettings() { return settings_; }
+  std::string& getFrameName() { return settings_.frame_name; }
 };
 
 }  // namespace dynacom

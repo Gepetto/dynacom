@@ -14,7 +14,7 @@ void exposeContactBase() {
   class ContactBaseWrapper : public ContactBase,
                              public boost::python::wrapper<ContactBase> {
    public:
-    virtual std::string &getFrameName() {
+    virtual std::string& getFrameName() {
       return this->get_override("getFrameName")();
     }
 
