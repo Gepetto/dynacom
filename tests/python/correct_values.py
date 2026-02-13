@@ -5,8 +5,8 @@ Created on Thu Nov 24 09:08:48 2022
 
 @author: nvilla
 """
-import numpy as np
 
+import numpy as np
 
 correct_left_z_force = np.array(
     [
